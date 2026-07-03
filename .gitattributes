@@ -1,0 +1,5 @@
+# These files run on the Linux server — force LF regardless of client OS.
+Caddyfile text eol=lf
+docker-compose.yml text eol=lf
+*.env text eol=lf
+.env.example text eol=lf
