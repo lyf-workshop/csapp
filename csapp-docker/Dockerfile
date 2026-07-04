@@ -3,6 +3,9 @@ ARG arch_name=amd64
 ARG code_server_version=4.106.2
 ARG cpptools_version=1.29.0
 ARG office_version=3.1.6
+# GitHub download proxy prefix (helps in mainland China). Empty = direct.
+# Override via docker-compose (GH_PROXY in .env), e.g. https://gh-proxy.com/
+ARG gh_proxy=
 
 RUN cp /etc/apt/sources.list /etc/apt/sources.backup.list
 
@@ -25,8 +28,8 @@ ENV LANG=en_US.utf8 \
     LC_ALL=en_US.UTF-8
 
 # Network Packages
-RUN wget https://github.com/coder/code-server/releases/download/v${code_server_version}/code-server_${code_server_version}_${arch_name}.deb && \
-    dpkg -i code-server_${code_server_version}_${arch_name}.deb
+RUN wget ${gh_proxy}https://github.com/coder/code-server/releases/download/v${code_server_version}/code-server_${code_server_version}_${arch_name}.deb -O code-server.deb && \
+    dpkg -i code-server.deb && rm code-server.deb
 
 RUN usermod -s /bin/bash csapp
 RUN chsh -s /bin/bash csapp
@@ -43,7 +46,7 @@ ADD cweijan.vscode-office-${office_version}.vsix /home/csapp/extensions
 RUN code-server --install-extension /home/csapp/extensions/cweijan.vscode-office-${office_version}.vsix
 
 # Cpp Extension
-RUN wget https://github.com/microsoft/vscode-cpptools/releases/download/v${cpptools_version}/cpptools-linux-x64.vsix -O /home/csapp/extensions/cpptools-linux-x64.vsix
+RUN wget ${gh_proxy}https://github.com/microsoft/vscode-cpptools/releases/download/v${cpptools_version}/cpptools-linux-x64.vsix -O /home/csapp/extensions/cpptools-linux-x64.vsix
 RUN code-server --install-extension /home/csapp/extensions/cpptools-linux-x64.vsix
 
 # Formatter Extension
