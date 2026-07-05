@@ -14,12 +14,21 @@ services:
     volumes:
       # 你的实验代码，容器内路径是 /home/csapp/project
       - ./labs:/home/csapp/project
-      # 持久化 code-server 的设置/扩展/打开状态，重启不丢
+      # 持久化设置/扩展/自签证书，重启不丢（证书不变，浏览器不必反复放行）
       - csapp-userdata:/home/csapp/.local/share/code-server
       - csapp-config:/home/csapp/.config
-    # 只绑定到宿主机本地回环，由宿主机 nginx 反向代理，不直接暴露公网
+    # 直接对公网开放 7777（记得在阿里云安全组放行入站 7777）
     ports:
-      - "127.0.0.1:7777:7777"
+      - "7777:7777"
+    # 用自签证书走 HTTPS：--cert 不带路径时 code-server 会自动生成自签证书。
+    # 访问 https://<公网IP>:7777 ，浏览器首次会提示"不安全"，点继续即可。
+    command:
+      - code-server
+      - --bind-addr
+      - 0.0.0.0:7777
+      - --auth
+      - password
+      - --cert
 
 volumes:
   csapp-userdata:

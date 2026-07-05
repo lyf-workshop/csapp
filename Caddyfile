@@ -1,9 +1,0 @@
-# 注意：仅当服务器上没有其它占用 80/443 的服务时，用独立 Caddy 方案才需要它。
-# 若宿主机已有 nginx，请改用 deploy/nginx-csapp.conf 共存方案，本文件可忽略。
-#
-# 把 <你的公网IP> 换成服务器真实公网 IP，比如 1.2.3.4.sslip.io
-# sslip.io 会自动把 1.2.3.4.sslip.io 解析到 1.2.3.4，无需注册域名。
-# Caddy 会自动为这个主机名申请并续期 Let's Encrypt 证书。
-<你的公网IP>.sslip.io {
-	reverse_proxy csapp:7777
-}
