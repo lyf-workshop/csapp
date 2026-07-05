@@ -1,8 +1,6 @@
 services:
   csapp:
     # 从本仓库的 csapp-docker 目录构建（这是 2025 更新版）。
-    # 如果想直接用作者发布的镜像，把下面两行 build 换成:
-    #   image: xieguochao/csapp:1.8
     build:
       context: ./csapp-docker
       args:
@@ -19,27 +17,10 @@ services:
       # 持久化 code-server 的设置/扩展/打开状态，重启不丢
       - csapp-userdata:/home/csapp/.local/share/code-server
       - csapp-config:/home/csapp/.config
-    # 只在内部网络暴露 7777，不映射到宿主机公网端口
-    expose:
-      - "7777"
-
-  caddy:
-    image: caddy:2
-    container_name: caddy
-    restart: unless-stopped
+    # 只绑定到宿主机本地回环，由宿主机 nginx 反向代理，不直接暴露公网
     ports:
-      # ACME 证书申请 + HTTPS 访问，需要在云安全组放行 80 和 443
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
-    depends_on:
-      - csapp
+      - "127.0.0.1:7777:7777"
 
 volumes:
   csapp-userdata:
   csapp-config:
-  caddy-data:
-  caddy-config:
