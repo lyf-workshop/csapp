@@ -16,20 +16,12 @@ services:
       - ./labs:/home/csapp/project
       # 持久化设置/扩展/自签证书，重启不丢（证书不变，浏览器不必反复放行）
       - csapp-userdata:/home/csapp/.local/share/code-server
-      - csapp-config:/home/csapp/.config
+      # 挂入配置文件启用自签 HTTPS（cert: true）+ 绑定地址
+      - ./deploy/config.yaml:/home/csapp/.config/code-server/config.yaml:ro
     # 直接对公网开放 7777（记得在阿里云安全组放行入站 7777）
+    # 访问 https://<公网IP>:7777 ，浏览器首次会提示"不安全"，点继续即可。
     ports:
       - "7777:7777"
-    # 用自签证书走 HTTPS：--cert 不带路径时 code-server 会自动生成自签证书。
-    # 访问 https://<公网IP>:7777 ，浏览器首次会提示"不安全"，点继续即可。
-    command:
-      - code-server
-      - --bind-addr
-      - 0.0.0.0:7777
-      - --auth
-      - password
-      - --cert
 
 volumes:
   csapp-userdata:
-  csapp-config:

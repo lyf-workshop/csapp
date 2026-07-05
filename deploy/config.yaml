@@ -1,0 +1,6 @@
+# code-server 配置。挂到容器 /home/csapp/.config/code-server/config.yaml。
+# 密码不写这里，由 docker-compose 的 PASSWORD 环境变量提供。
+bind-addr: 0.0.0.0:7777
+auth: password
+# 自签证书走 HTTPS；证书自动生成并存于 userdata 卷，重启不变。
+cert: true

@@ -1,4 +1,5 @@
 # These files run on the Linux server — force LF regardless of client OS.
 docker-compose.yml text eol=lf
+deploy/config.yaml text eol=lf
 *.env text eol=lf
 .env.example text eol=lf
