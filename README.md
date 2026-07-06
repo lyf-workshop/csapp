@@ -8,6 +8,11 @@ The original materials of CS:APP is from CMU: [CS:APP labs](http://csapp.cs.cmu.
 
 The code server is based on [https://github.com/cdr/code-server](https://github.com/cdr/code-server).
 
+## 云服务器部署（任何设备浏览器访问）
+
+想部署到云服务器、随时随地用浏览器做实验？看 **[DEPLOY.md](DEPLOY.md)**，
+或直接在克隆好的仓库里跑一键脚本 `./setup.sh`。
+
 ## How to Use It?
 
 ### Update for Mac user (2025)
